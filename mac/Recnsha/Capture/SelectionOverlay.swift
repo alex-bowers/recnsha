@@ -54,14 +54,15 @@ final class SelectionOverlay {
 
     private func show(continuation: CheckedContinuation<Selection?, Never>) {
         self.continuation = continuation
-        NSApp.activate()
+        // Do not activate the app: macOS would switch to the desktop (Space) holding one of
+        // Recnsha's windows, such as the Library. Non-activating panels can take key input regardless.
         for screen in NSScreen.screens {
             let panel = OverlayPanel(screen: screen, overlay: self)
             panels.append(panel)
             panel.orderFrontRegardless()
         }
         let mouse = NSEvent.mouseLocation
-        (panels.first { $0.frame.contains(mouse) } ?? panels.first)?.makeKey()
+        (panels.first { $0.frame.contains(mouse) } ?? panels.first)?.makeKeyAndOrderFront(nil)
         NSCursor.crosshair.push()
         mouseMoved(to: mouse)
     }

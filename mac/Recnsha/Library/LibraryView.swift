@@ -169,6 +169,8 @@ private struct LibraryItem: View {
     /// Called when the card is clicked in selection mode; the flag is true for Shift-click.
     let onSelect: (Bool) -> Void
 
+    @State private var prefetch: Task<Void, Never>?
+
     private var title: String { file.menuTitle(relativeTo: .now) }
 
     var body: some View {
@@ -196,6 +198,11 @@ private struct LibraryItem: View {
             .buttonStyle(.plain)
             .accessibilityLabel(accessibilityLabel)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .help(isSelecting ? "" : "Click to open. Drag into a GitHub comment, or anywhere else, to attach the file.")
+            .onHover(perform: prepareForDrag)
+            .onDrag {
+                isSelecting ? NSItemProvider() : DownloadCache.shared.dragItem(for: file)
+            }
 
             HStack(spacing: 6) {
                 Text(title)
@@ -210,6 +217,17 @@ private struct LibraryItem: View {
         }
         .contextMenu {
             if !isSelecting { actions }
+        }
+    }
+
+    /// Downloads the file after a short hover, so a drag can hand over a real file straight away.
+    private func prepareForDrag(_ hovering: Bool) {
+        prefetch?.cancel()
+        guard hovering, !isSelecting else { return }
+        prefetch = Task {
+            try? await Task.sleep(for: .milliseconds(500))
+            guard !Task.isCancelled else { return }
+            DownloadCache.shared.prefetch(file)
         }
     }
 

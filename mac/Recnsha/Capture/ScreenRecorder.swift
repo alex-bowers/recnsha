@@ -89,6 +89,14 @@ final class ScreenRecorder: NSObject {
         return outputURL
     }
 
+    /// Stops recording and deletes whatever was recorded.
+    func cancel() async {
+        let finishedURL = try? await stop()
+        if let url = finishedURL ?? outputURL {
+            try? FileManager.default.removeItem(at: url)
+        }
+    }
+
     fileprivate func complete(with error: Error?) {
         if let finish {
             self.finish = nil

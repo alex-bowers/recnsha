@@ -69,7 +69,10 @@ Screenshots and recordings are captured at your display's full resolution. An ar
 
 **Delay:** choose 3, 5 or 10 seconds from the menu's **Delay** submenu or in Settings. The countdown starts after you select, so you can open a menu or hover over something before the capture.
 
-**Recordings** are MP4 video at 30 frames per second with the pointer visible and no sound. A red border marks the recorded area, and a small control below it shows the elapsed time and a **Stop** button. You can also stop by pressing ⌃⇧2 again or choosing **Stop Recording** from the menu. Neither the border nor the control appears in the recording.
+**Recordings** are MP4 video at 30 frames per second with the pointer visible and no sound. A red border marks the recorded area, and a small control below it shows the elapsed time with **Cancel** and **Stop** buttons. Neither the border nor the control appears in the recording.
+
+- **Stop** (or ⌃⇧2 again, or **Stop Recording** in the menu) finishes and uploads the recording.
+- **Cancel** (or **Cancel Recording** in the menu) stops and deletes it without uploading.
 
 After each upload, a message at the bottom of the screen confirms what happened, and a notification appears if notifications are allowed. Click the notification to open the share page.
 
@@ -93,6 +96,14 @@ Open the Library with ⌃⇧L, the menu's **Library…** item, or by opening Rec
 - The copy button copies in your chosen format. The **⋯** button and right-click offer Copy Link, Copy Markdown, Copy Image Link, Open in Browser and Delete….
 - Recordings show a **Video** badge, or **Video · GIF** when they have a GIF. The thumbnail of a recording with a GIF is the GIF; the video itself is unchanged.
 - Older uploads load as you scroll. Press ⌘R to refresh.
+
+### Dragging into GitHub and other apps
+
+Drag a card out of the Library to drop its file somewhere else, for example into a GitHub issue or pull request comment, which attaches it. GitHub plays MP4 recordings inline, which a link to your share page cannot do.
+
+Rest the pointer on the card for a moment before dragging: Recnsha downloads the file first, so it is ready to hand over. The most recent 20 downloads are kept in `~/Library/Containers/<bundle ID>/Data/Library/Caches/Recnsha/Downloads`, and deleting an upload removes its copy.
+
+GitHub limits attached videos to 10 MB on free plans and 100 MB on paid plans.
 
 ### Deleting several uploads
 
@@ -127,4 +138,4 @@ GIFs are 12 frames per second, up to 640 pixels wide, and loop. Making a GIF aga
 
 ## Privacy
 
-Captures go only to the server you configure. The app has no analytics and makes no other network requests. Nothing is saved on your Mac, except captures whose upload failed; these are kept until they are retried, in `~/Library/Containers/<bundle ID>/Data/Library/Application Support/Recnsha/Failed Uploads`.
+Captures go only to the server you configure. The app has no analytics and makes no other network requests. Nothing is saved on your Mac, except recent downloads for dragging (see above) and captures whose upload failed; these are kept until they are retried, in `~/Library/Containers/<bundle ID>/Data/Library/Application Support/Recnsha/Failed Uploads`.

@@ -7,12 +7,12 @@ import SwiftUI
 final class RecordingIndicator {
     private var panels: [NSPanel] = []
 
-    func show(around displayRect: CGRect, startedAt: Date, onStop: @escaping () -> Void) {
+    func show(around displayRect: CGRect, startedAt: Date, onStop: @escaping () -> Void, onCancel: @escaping () -> Void) {
         hide()
         let area = Geometry.flip(displayRect, primaryHeight: Geometry.primaryHeight)
         panels.append(FloatingPanel.make(frame: area.insetBy(dx: -3, dy: -3), contentView: NSHostingView(rootView: RecordingBorder())))
 
-        let controls = NSHostingView(rootView: RecordingControls(startedAt: startedAt, onStop: onStop))
+        let controls = NSHostingView(rootView: RecordingControls(startedAt: startedAt, onStop: onStop, onCancel: onCancel))
         let size = controls.fittingSize
         let visible = (NSScreen.screens.first { $0.frame.intersects(area) } ?? NSScreen.main)?.visibleFrame ?? .zero
         var origin = CGPoint(x: area.midX - size.width / 2, y: area.minY - size.height - 12)
@@ -41,6 +41,7 @@ private struct RecordingBorder: View {
 private struct RecordingControls: View {
     let startedAt: Date
     let onStop: () -> Void
+    let onCancel: () -> Void
 
     var body: some View {
         HStack(spacing: 10) {
@@ -53,6 +54,10 @@ private struct RecordingControls: View {
                     .monospacedDigit()
                     .accessibilityLabel("Recording time")
             }
+            Button("Cancel", action: onCancel)
+                .buttonStyle(.bordered)
+                .help("Stop and discard the recording")
+                .accessibilityLabel("Cancel recording")
             Button("Stop", action: onStop)
                 .buttonStyle(.borderedProminent)
                 .tint(.red)

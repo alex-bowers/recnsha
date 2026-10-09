@@ -11,6 +11,11 @@ struct MenuContent: View {
         Button(title(model.isRecording ? "Stop Recording" : "Record Screen", for: .record)) {
             Task { await model.toggleRecording() }
         }
+        if model.isRecording {
+            Button("Cancel Recording") {
+                Task { await model.cancelRecording() }
+            }
+        }
 
         Picker("Delay", selection: $model.delaySeconds) {
             ForEach(AppModel.delayOptions, id: \.self) { seconds in

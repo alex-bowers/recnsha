@@ -221,12 +221,25 @@ final class AppModel {
             try await recorder.start(area: selection.displayRect)
             self.recorder = recorder
             isRecording = true
-            recordingIndicator.show(around: selection.displayRect, startedAt: .now) { [weak self] in
-                Task { await self?.stopRecording() }
-            }
+            recordingIndicator.show(
+                around: selection.displayRect,
+                startedAt: .now,
+                onStop: { [weak self] in Task { await self?.stopRecording() } },
+                onCancel: { [weak self] in Task { await self?.cancelRecording() } }
+            )
         } catch {
             recordingFailed(error)
         }
+    }
+
+    /// Stops recording without uploading, and deletes the recording.
+    func cancelRecording() async {
+        guard let recorder else { return }
+        self.recorder = nil
+        isRecording = false
+        recordingIndicator.hide()
+        await recorder.cancel()
+        Toast.show("Recording discarded", systemImage: "trash")
     }
 
     func stopRecording() async {
@@ -399,6 +412,7 @@ final class AppModel {
 
         let deleted = Set(result.deleted)
         uploads.removeAll { deleted.contains($0.id) }
+        DownloadCache.shared.discard(files.filter { deleted.contains($0.id) })
 
         if result.failed.isEmpty {
             Toast.show(single ? "Deleted" : "Deleted \(deleted.count) uploads", systemImage: "trash")
