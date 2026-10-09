@@ -1,6 +1,6 @@
 #  Record 'n' Share
 
-Self-hosted screenshot and screen recording sharing, in the spirit of Gyazo. A macOS menu-bar app captures an area, a window or a recording and uploads it to your own server. That server, a Cloudflare Worker, stores the file and serves a short share link.
+Self-hosted screenshot and screen recording sharing. A macOS menu-bar app captures an area, a window or a recording and uploads it to your own server. That server, a Cloudflare Worker, stores the file and serves a short share link.
 
 | Part | Folder | Documentation |
 |---|---|---|
