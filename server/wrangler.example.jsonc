@@ -1,0 +1,32 @@
+// Copy this file to wrangler.jsonc (which is not committed) and fill in your own values:
+//   cp wrangler.example.jsonc wrangler.jsonc
+// The tests and type generation use this example file, so they work without anyone's private settings.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "recnsha",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  // Daily clean-up of uploads that were started but never completed.
+  "triggers": { "crons": ["0 3 * * *"] },
+  // Your share domain. Its zone must be in your Cloudflare account.
+  "routes": [{ "pattern": "share.example.com", "custom_domain": true }],
+  "vars": {
+    // The same domain, used to build share links.
+    "PUBLIC_BASE_URL": "https://share.example.com",
+    // Uploads are refused with 507 once originals, GIFs and unfinished uploads reach this size.
+    "MAX_STORAGE_GB": 50
+  },
+  "r2_buckets": [{ "binding": "BUCKET", "bucket_name": "recnsha-assets" }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "recnsha",
+      // Replace with the ID printed by `pnpm exec wrangler d1 create recnsha`.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

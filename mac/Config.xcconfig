@@ -1,0 +1,9 @@
+// Shared build settings for Recnsha and its tests.
+// Personal values (signing team, bundle ID prefix) go in Local.xcconfig, which is not committed.
+// Without it, the app builds with "Sign to Run Locally" and a com.example bundle ID.
+
+CODE_SIGN_IDENTITY = -
+DEVELOPMENT_TEAM =
+RECNSHA_BUNDLE_ID_PREFIX = com.example
+
+#include? "Local.xcconfig"

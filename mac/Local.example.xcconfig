@@ -1,0 +1,10 @@
+// Copy this file to Local.xcconfig (which is not committed) and fill in your own values:
+//   cp Local.example.xcconfig Local.xcconfig
+
+// Your team ID: Xcode › Settings › Accounts, select your Apple ID, then your team.
+// Signing with a team keeps the Screen Recording permission across rebuilds.
+DEVELOPMENT_TEAM = ABCDE12345
+CODE_SIGN_IDENTITY = Apple Development
+
+// Reverse-domain prefix for the bundle IDs, for example uk.co.yourname.
+RECNSHA_BUNDLE_ID_PREFIX = com.yourname
